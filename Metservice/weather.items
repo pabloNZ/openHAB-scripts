@@ -1,0 +1,68 @@
+Group		gWeather
+Group		gWeatherTomorrow
+Group 		gChart
+Group		gTemperatureChart
+Group		gHumidityChart
+Group		gPressureChart
+
+Switch		weatherAnnounce				"Announce the Weather"
+Number		weatherChartPeriod			"Chart Period"					<chart>
+Number		weatherChartData			"Chart Data Type"				<chart>
+Switch		weatherChartHumidity		
+Number 		weatherForecast				"Forecast/Map"					<forecast>
+
+
+String    weatherData    "Metservice data: [%s]" { exec="<[/etc/openhab2/scripts/metservice.py lyall-bay:50000:REGEX((.*?))]" }
+
+//// WEATHER TODAY
+Number    weatherTemperature			"Temperature [%.0f °C]"				<temperature>		(gChart, gWeather, gTemperatureChart)	{weather="locationId=home, type=temperature, property=current" }
+Number    weatherTemperatureChartPeriod	"Chart Period"						<calendar>
+Number    weatherHumidity				"Humidity [%d %%]"					<humidity>			(gChart, gWeather, gHumidityChart)		{weather="locationId=home, type=athmosphere, property=humidity" }
+Number    weatherHumidityChartPeriod	"Chart Period"						<calendar>
+Number    weatherPressure				"Barometric Pressure [%.0f hPa]"	<barometer>			(gChart, gWeather, gPressureChart)		{weather="locationId=home, type=athmosphere, property=pressure" }
+Number    weatherPressureChartPeriod	"Chart Period"						<calendar>
+Number    weatherPrecipProbability		"Chance of rain [%d %%]"  			<precipitation>		(gWeather)						{weather="locationId=home, type=precipitation, property=probability"}
+String    weatherCondition				"Today: [%s]"						<weather>			(gWeather)						{weather="locationId=home, type=condition, property=text"}
+String    weatherConditionDetailed		"Today: [%s]"						<weather>			(gWeather)						{http="<[http://api.wunderground.com/api/b6bab063a074da1c/forecast10day/q/nz/wellington.xml:1800000:XSLT(wunderground_forecast_fcttext.xsl)]"}
+Number    weatherRain					"Rain [%.2f mm/h]"					<precipitation>		(gWeather)						{weather="locationId=home, type=precipitation, property=rain"}
+Number    weatherSnow					"Snow [%.2f mm/h]"					<snow>				(gWeather)						{weather="locationId=home, type=precipitation, property=snow"}
+Number    weatherTempFeel				"Feels like [%.0f °C]"				<tempfeel>			(gWeather)						{weather="locationId=home, type=temperature, property=feel"}
+Number    weatherTempMin				"Temperature min [%.1f °C]"			<tempmin>			(gWeather)						{weather="locationId=home, type=temperature, property=min"}
+Number    weatherTempMax				"Temperature max [%.1f °C]"			<tempmax>			(gWeather)						{weather="locationId=home, type=temperature, property=max"}
+Number    weatherWindSpeed				"Windspeed [%.0f km/h]"				<windspeed>			(gChart, gWeather)				{weather="locationId=home, type=wind, property=speed"}
+String    weatherWindDirection			"Wind direction [%s]"				<direction>			(gWeather)						{weather="locationId=home, type=wind, property=direction"}
+Number    weatherWindGust				"Wind gust [%.1f km/h]"				<windspeed>			(gChart, gWeather)				{weather="locationId=home, type=wind, property=gust"}
+Number    weatherWindChill				"Wind chill [%.1f °C]"				<windchill>			(gWeather)						{weather="locationId=home, type=wind, property=chill"}
+
+////WEATHER TOMORROW
+String    weatherConditionTomorrow			"Tomorrow: [%s]" 				<weather>				(gWeather, gWeatherTomorrow)				{weather="locationId=home, forecast=1, type=condition, property=text"}
+String    weatherConditionTomorrowDetailed	"Tomorrow: [%s]"      			<weather>				(gWeather, gWeatherTomorrow)				{http="<[http://api.wunderground.com/api/b6bab063a074da1c/forecast10day/q/nz/wellington.xml:1800000:XSLT(wunderground_forecast2_fcttext.xsl)]"}
+String    weatherTempMinMaxTomorrow			"Min/Max [%s °C]"				<temperature>			(gWeather, gWeatherTomorrow)				{weather="locationId=home, forecast=1, type=temperature, property=minMax"}
+Number    weatherPrecipProbabilityTomorrow	"Chance of rain [%d %%]"		<precipitation>			(gWeather, gWeatherTomorrow)				{weather="locationId=home, forecast=1, type=precipitation, property=probability"}
+Number    weatherWindSpeedTomorrow			"Windspeed [%.0f km/h]"			<windspeed>				(gWeather, gWeatherTomorrow)				{weather="locationId=home, forecast=1, type=wind, property=speed"}
+
+
+////HABPANEL
+DateTime	LastUpdate		"Last update [%1$td.%1$tm.%1$tY %1$tH:%1$tM]"	{weather="locationId=home, type=condition, property=lastUpdate"}
+Number   	Temperature     "Temperature [%.2f °C]"      					{weather="locationId=home, type=temperature, property=current"}
+Number   	Humidity   		"Humidity [%d %%]"      						{weather="locationId=home, type=atmosphere, property=humidity"}
+Number   	Pressure   		"Pressure [%.2f mb]"         					{weather="locationId=home, type=atmosphere, property=pressure"}
+
+DateTime ObservationTime0  "Observation time [%1$td.%1$tm.%1$tY %1$tH:%1$tM]" 	{weather="locationId=home, forecast=0, type=condition, property=observationTime"}
+DateTime ObservationTime1  "Observation time [%1$td.%1$tm.%1$tY %1$tH:%1$tM]"   {weather="locationId=home, forecast=1, type=condition, property=observationTime"}
+DateTime ObservationTime2  "Observation time [%1$td.%1$tm.%1$tY %1$tH:%1$tM]"   {weather="locationId=home, forecast=2, type=condition, property=observationTime"}
+
+Number   Temp_Min0         "Temperature min [%.2f °C]"  {weather="locationId=home, forecast=0, type=temperature, property=min"}
+Number   Temp_Max0         "Temperature max [%.2f °C]"  {weather="locationId=home, forecast=0, type=temperature, property=max"}
+Number   Temp_Min1         "Temperature min [%.2f °C]"  {weather="locationId=home, forecast=1, type=temperature, property=min"}
+Number   Temp_Max1         "Temperature max [%.2f °C]"  {weather="locationId=home, forecast=1, type=temperature, property=max"}
+Number   Temp_Min2         "Temperature min [%.2f °C]"  {weather="locationId=home, forecast=2, type=temperature, property=min"}
+Number   Temp_Max2         "Temperature max [%.2f °C]"  {weather="locationId=home, forecast=2, type=temperature, property=max"}
+
+Number   Pop0         "Precip. Probability [%.2f %]"  {weather="locationId=home, forecast=0, type=precipitation, property=probability"}
+Number   Pop1         "Precip. Probability [%.2f %]"  {weather="locationId=home, forecast=1, type=precipitation, property=probability"}
+Number   Pop2         "Precip. Probability [%.2f %]"  {weather="locationId=home, forecast=2, type=precipitation, property=probability"}
+
+String   Condition0        "Condition [%s]"    	        {weather="locationId=home, forecast=0, type=condition, property=text"}
+String   Condition1        "Condition [%s]"   	        {weather="locationId=home, forecast=1, type=condition, property=text"}
+String   Condition2        "Condition [%s]"		{weather="locationId=home, forecast=2, type=condition, property=text"}
