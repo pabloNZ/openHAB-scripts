@@ -1,11 +1,2 @@
-//Sonos
-Thing	sonos:CONNECT:Living	[ udn="RINCON_000E582BCA9001400", refresh=60]
-Thing	sonos:PLAY1:Dining		[ udn="RINCON_B8E937BC2B4A01400", refresh=60]
-
-//Harmony Hub
-Bridge harmonyhub:hub:Living [host="192.168.1.38"] {
-    device AndroidTV [ id=37296368 ]
-    device Server [ id=31923074 ]
-    device SamsungTV	[ id=35957511 ]
-    device Denon	[ id=33252563 ]
-}
+//AndroidTV
+Thing exec:command:androidApp [command="/usr/bin/python /etc/openhab2/scripts/androidTVFocus.py", interval=900, timeout=30, autorun=true]

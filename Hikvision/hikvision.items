@@ -1,0 +1,5 @@
+//Hikvision Motion Alerts
+Contact Motion_VT_Garage      "Garage Video Motion  [MAP(motion.map):%s]"
+Contact Motion_VT_Garage_Line "Garage Video Line    [MAP(motion.map):%s]"
+Contact Motion_VT_Front       "Front Video Motion   [MAP(motion.map):%s]"
+Contact Motion_VT_Front_Line  "Front Video Line     [MAP(motion.map):%s]" 
